@@ -31,27 +31,31 @@ class DateTests: BaseTestCase {
         
         // Given
         let rfc822DateFormatter = RFC822DateFormatter()
-        let dateString = "Tue, 04 Feb 2014 22:03:45 Z"
+        let dateStrings = [
+            "Tue, 04 Feb 2014 22:03:45 Z",
+            "2014-02-04 22:03:45"
+        ]
         
         var calendar = Calendar(identifier: Calendar.Identifier.gregorian)
         calendar.locale = Locale(identifier: "en_US_POSIX")
         calendar.timeZone = TimeZone(secondsFromGMT: 0)!
         
         // When
-        let date = rfc822DateFormatter.date(from: dateString)
-        
-        // Then
-        XCTAssertNotNil(date)
-        
-        let components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date!)
-        
-        XCTAssertEqual(components.day, 4)
-        XCTAssertEqual(components.month, 2)
-        XCTAssertEqual(components.year, 2014)
-        XCTAssertEqual(components.hour, 22)
-        XCTAssertEqual(components.minute, 3)
-        XCTAssertEqual(components.second, 45)
-        
+        dateStrings.forEach { dateString in
+            let date = rfc822DateFormatter.date(from: dateString)
+
+            // Then
+            XCTAssertNotNil(date)
+            
+            let components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date!)
+            
+            XCTAssertEqual(components.day, 4)
+            XCTAssertEqual(components.month, 2)
+            XCTAssertEqual(components.year, 2014)
+            XCTAssertEqual(components.hour, 22)
+            XCTAssertEqual(components.minute, 3)
+            XCTAssertEqual(components.second, 45)
+        }   
     }
     
     func testRFC3339DateFormatter() {
